@@ -7,17 +7,23 @@ export default new Router({
     mode: 'history',
     base: process.env.BASE_URL,
     routes: [{
-            path: "/home",
+            path: "/",
             component: Home,
-            name: "home",
             children: [{
-                    path: "myProject",
+                    path: "/myproject",
                     name: "project",
                     component: () => import("@/views/project/Index.vue")
                 },
                 {
-                    path: "/",
-                    redirect: {name:'project'}
+                    path: "",
+                    redirect: {
+                        name: 'project'
+                    }
+                },
+                {
+                    path: "test",
+                    name:'test',
+                    component: () => import("@/views/test/Test.vue")
                 }
             ]
         },

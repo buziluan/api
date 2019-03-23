@@ -3,7 +3,7 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-19 12:56:43
- * @LastEditTime: 2019-03-23 00:59:31
+ * @LastEditTime: 2019-03-23 19:17:44
  -->
 <template>
 
@@ -19,12 +19,12 @@
                             <Icon type="ios-folder-open" />
                             我的项目
                         </menu-item>
-                        <menu-item name="2" :to="{name:'home'}">
+                        <menu-item name="2" :to="{path:'/test'}">
                             <Icon type="ios-build" />
                             我的配置
                         </menu-item>
                         <menu-item name="3">
-                            <Icon type="md-person" :to="{name:'home'}" />
+                            <Icon type="md-person" :to="{name:'test'}" />
                             我的信息
                         </menu-item>
                     </div>
