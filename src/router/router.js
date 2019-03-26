@@ -4,13 +4,13 @@ import Home from "@/views/home/Home.vue"
 Vue.use(Router)
 
 export default new Router({
-    mode: 'history',
+    mode: 'hash',
     base: process.env.BASE_URL,
     routes: [{
-            path: "/",
+            path: "/home",
             component: Home,
             children: [{
-                    path: "/myproject",
+                    path: "myproject",
                     name: "project",
                     component: () => import("@/views/project/Index.vue")
                 },
@@ -22,14 +22,19 @@ export default new Router({
                 },
                 {
                     path: "test",
-                    name:'test',
+                    name: 'test',
                     component: () => import("@/views/test/Test.vue")
                 }
             ]
         },
         {
             path: "/",
-            redirect: "home"
+            redirect: "login"
+        },
+        {
+            path:"/login",
+            name:"login",
+            component:() => import("@/views/login/Login.vue")
         }
     ]
 })
