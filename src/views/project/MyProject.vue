@@ -3,7 +3,7 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-27 11:19:32
- * @LastEditTime: 2019-03-27 12:53:08
+ * @LastEditTime: 2019-03-27 15:25:40
  -->
 <template>
     <div class="main">
@@ -48,7 +48,7 @@
         created() {
             setTimeout(() => {
                 this.isSpin = false
-            }, 2000);
+            }, 200);
         }
     }
 </script>

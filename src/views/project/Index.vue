@@ -3,14 +3,14 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-22 23:35:40
- * @LastEditTime: 2019-03-27 12:52:18
+ * @LastEditTime: 2019-03-27 15:55:11
  -->
 <template>
     <section class="project-content">
         <div class="nav">
             <breadcrumb>
                 <breadcrumb-item :to="{name:'myproject'}">我的项目</breadcrumb-item>
-                <!-- <breadcrumb-item :to="{name:'detail'}">项目</breadcrumb-item> -->
+                <breadcrumb-item :to="{name:'detail'}">演示项目</breadcrumb-item>
             </breadcrumb>
             <i-button @click="isShowAdd=!isShowAdd">新增</i-button>
         </div>
