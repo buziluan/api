@@ -32,9 +32,17 @@ export default new Router({
             redirect: "login"
         },
         {
-            path:"/login",
-            name:"login",
-            component:() => import("@/views/login/Login.vue")
+            path: "/login",
+            name: "login",
+            component: () => import("@/views/login/Login.vue")
+        },
+        {
+            path: "logout",
+            name: "logout",
+            redirect: "login",
+            beforeEnter: (to, from, next) => {
+                next()
+            }
         }
     ]
 })

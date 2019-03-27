@@ -3,7 +3,7 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-22 23:35:40
- * @LastEditTime: 2019-03-24 22:27:27
+ * @LastEditTime: 2019-03-26 21:48:56
  -->
 <template>
     <section class="project-content">
@@ -17,6 +17,21 @@
         <div class="project">
             <row :gutter="25">
                 <i-col :xl="4" :lg="6" :md="8" :sm="12">
+                    <project-item :data="item" />
+                </i-col>
+                 <i-col :xl="4" :lg="6" :md="8" :sm="12">
+                    <project-item :data="item" />
+                </i-col>
+                 <i-col :xl="4" :lg="6" :md="8" :sm="12">
+                    <project-item :data="item" />
+                </i-col>
+                 <i-col :xl="4" :lg="6" :md="8" :sm="12">
+                    <project-item :data="item" />
+                </i-col>
+                 <i-col :xl="4" :lg="6" :md="8" :sm="12">
+                    <project-item :data="item" />
+                </i-col>
+                 <i-col :xl="4" :lg="6" :md="8" :sm="12">
                     <project-item :data="item" />
                 </i-col>
             </row>
@@ -57,7 +72,7 @@
                         trigger: 'blur'
                     }],
                 },
-                isShowAdd: true, //显示新增窗口
+                isShowAdd: false, //显示新增窗口
                 headerSelectData: [ //请求头常用方式
                     {
                         label: "application/x-www-form-urlencoded",

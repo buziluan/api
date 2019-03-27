@@ -3,7 +3,7 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-25 19:11:06
- * @LastEditTime: 2019-03-25 21:54:09
+ * @LastEditTime: 2019-03-26 15:01:03
  -->
 <template>
     <div class="wrap">
@@ -52,10 +52,11 @@
                     }
                     setTimeout(()=>{
                         this.isLoading = false
-                        this.$Message.error({
+                        this.$Message.success({
                             content:"登录成功"
                         })
-                    },3000)
+                        this.$router.push({path:'/home'})
+                    },1000)
                 }
             }
     }

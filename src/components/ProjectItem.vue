@@ -3,7 +3,7 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-23 17:30:42
- * @LastEditTime: 2019-03-23 18:29:57
+ * @LastEditTime: 2019-03-26 21:47:59
  -->
 <template>
     <div>
@@ -12,21 +12,17 @@
                 {{data.title}}
             </div>
             <div class="item-content">
-                <div class="description">
-                    描述
+                <div class="describe">
+                    这个是描述。 这个是描述。 这个是描述。 这个是描述。这个是描述。。这个是描述。。这个是描述。。这个是描述。
                 </div>
-                <div>
-                    url
-                </div>
-                <div>
-                    属性
+                <div class="own">
+                    <img :src="require('../assets/public.svg')" alt="">
                 </div>
                 <div class="operation">
-                    <ButtonGroup>
-                        <Button>Yesterday</Button>
-                        <Button>Today</Button>
-                        <Button>Tomorrow</Button>
-                    </ButtonGroup>
+                    <button-group>
+                        <i-button icon="ios-eye">查看</i-button>
+                        <i-button icon="ios-trash-outline">删除</i-button>
+                    </button-group>
                 </div>
             </div>
         </card>
@@ -45,7 +41,6 @@
 <style lang="less" scoped>
     .item {
         width: 100%;
-        height: 300px;
         margin-bottom: 20px;
         cursor: pointer;
 
@@ -62,6 +57,34 @@
         width: 100%;
         display: flex;
         flex-direction: column;
-        padding: 10px;
+        justify-content: space-between;
+
+        .describe {
+            width: 100%;
+            height: 60px;
+            line-height: 20px;
+            overflow-y: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .own {
+            width: 100%;
+            height: 50px;
+            padding-top: 10px;
+            margin-top: 10px;
+
+            img {
+                height: 30px;
+            }
+        }
+
+        .operation {
+            margin-top: 10px;
+            width: 100%;
+            text-align: center;
+        }
     }
 </style>
