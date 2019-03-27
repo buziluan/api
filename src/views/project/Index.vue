@@ -3,52 +3,37 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-22 23:35:40
- * @LastEditTime: 2019-03-26 21:48:56
+ * @LastEditTime: 2019-03-27 12:52:18
  -->
 <template>
     <section class="project-content">
         <div class="nav">
             <breadcrumb>
-                <breadcrumb-item :to="{name:'project'}">我的项目</breadcrumb-item>
-                <!-- <breadcrumb-item :to="{name:'home'}">Components</breadcrumb-item> -->
+                <breadcrumb-item :to="{name:'myproject'}">我的项目</breadcrumb-item>
+                <!-- <breadcrumb-item :to="{name:'detail'}">项目</breadcrumb-item> -->
             </breadcrumb>
             <i-button @click="isShowAdd=!isShowAdd">新增</i-button>
         </div>
         <div class="project">
-            <row :gutter="25">
-                <i-col :xl="4" :lg="6" :md="8" :sm="12">
-                    <project-item :data="item" />
-                </i-col>
-                 <i-col :xl="4" :lg="6" :md="8" :sm="12">
-                    <project-item :data="item" />
-                </i-col>
-                 <i-col :xl="4" :lg="6" :md="8" :sm="12">
-                    <project-item :data="item" />
-                </i-col>
-                 <i-col :xl="4" :lg="6" :md="8" :sm="12">
-                    <project-item :data="item" />
-                </i-col>
-                 <i-col :xl="4" :lg="6" :md="8" :sm="12">
-                    <project-item :data="item" />
-                </i-col>
-                 <i-col :xl="4" :lg="6" :md="8" :sm="12">
-                    <project-item :data="item" />
-                </i-col>
-            </row>
+            <router-view />
         </div>
-
-        <modal v-model="isShowAdd" title="创建新的项目" width="1000">
+        <modal v-model="isShowAdd" title="创建新的项目" width="500" :loading="true" @on-ok="handleClickAdd">
             <i-form label-position="top" :model="formData" :rules="ruleCustom">
                 <form-item label="项目名称" prop="titel">
                     <i-input type="text" v-model="formData.title" placeholder="请输入项目名称"></i-input>
                 </form-item>
-                <form-item label="项目描述">
-                    <i-input type="text" placeholder="请输入项目描述"></i-input>
+                <form-item label="项目描述" prop="describe">
+                    <i-input type="text" v-model="formData.describe" placeholder="请输入项目描述"></i-input>
                 </form-item>
-                <form-item label="请求头类别">
-                    <i-select clearable>
-                        <i-option v-for="item in headerSelectData" :key="item.label" :value="item.value">{{item.label}}
-                        </i-option>
+                <form-item label="项目根路径" prop="baseurl">
+                    <i-input type="text" v-model="formData.baseurl" placeholder="请输入项目根路径">
+                        <span slot="prepend">/</span>
+                    </i-input>
+                </form-item>
+                <form-item label="是否公开" prop="public">
+                    <i-select type="text" v-model="formData.public">
+                        <i-option value="public">公开</i-option>
+                        <i-option value="private">私有</i-option>
                     </i-select>
                 </form-item>
             </i-form>
@@ -56,13 +41,18 @@
     </section>
 </template>
 <script>
-    import ProjectItem from "@/components/ProjectItem.vue"
+    import {
+        setTimeout
+    } from 'timers';
     export default {
         data() {
             return {
                 //表单对象
                 formData: {
-                    titel: ""
+                    titel: "",
+                    describe: "",
+                    baseurl: "",
+                    public: ""
                 },
                 //验证对象
                 ruleCustom: {
@@ -71,29 +61,39 @@
                         message: '项目名称不能为空',
                         trigger: 'blur'
                     }],
+                    describe: [{
+                        required: true,
+                        message: '项目描述不能为空',
+                        trigger: 'blur'
+                    }],
+                    baseurl: [{
+                        required: true,
+                        message: '项目根目录不能为空',
+                        trigger: 'blur'
+                    }],
+                    public: [{
+                        required: true,
+                        message: '项目是否公开',
+                        trigger: 'change'
+                    }],
                 },
-                isShowAdd: false, //显示新增窗口
-                headerSelectData: [ //请求头常用方式
-                    {
-                        label: "application/x-www-form-urlencoded",
-                        value: "application/x-www-form-urlencoded"
-                    },
-                    {
-                        label: "multipart/form-data",
-                        value: "multipart/form-data"
-                    },
-                    {
-                        label: "application/json",
-                        value: "application/json"
-                    }
-                ],
+                //显示新增窗口
+                isShowAdd: false,
                 item: {
                     title: "演示项目"
                 }
             }
         },
-        components: {
-            ProjectItem
+        components: {},
+        methods: {
+            handleClickAdd() {
+                setTimeout(() => {
+                    this.$Message.success({
+                        content: "创建成功"
+                    })
+                    this.isShowAdd = false
+                }, 3000)
+            }
         }
     }
 </script>
@@ -114,6 +114,7 @@
         .nav {
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
     }
 </style>

@@ -3,7 +3,7 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-19 12:56:43
- * @LastEditTime: 2019-03-26 20:30:14
+ * @LastEditTime: 2019-03-27 11:20:53
  -->
 <template>
 
@@ -15,7 +15,7 @@
                         <p>三人行，必有我师</p>
                     </div>
                     <div class="menu-nav">
-                        <menu-item name="1" :to="{name:'project'}">
+                        <menu-item name="1" :to="{name:'myproject'}">
                             <Icon type="ios-folder-open" />
                             我的项目
                         </menu-item>

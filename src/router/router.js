@@ -10,14 +10,27 @@ export default new Router({
             path: "/home",
             component: Home,
             children: [{
-                    path: "myproject",
-                    name: "project",
-                    component: () => import("@/views/project/Index.vue")
+                    path: "project",
+                    component: () => import("@/views/project/Index.vue"),
+                    children: [{
+                        path: "me",
+                        name: "myproject",
+                        component: () => import("@/views/project/MyProject.vue"),
+                    }, {
+                        path: "",
+                        redirect: {
+                            name: 'myproject'
+                        }
+                    }, {
+                        path: "detail",
+                        name: "detail",
+                        component: () => import("@/views/details/ProjectDetail.vue")
+                    }]
                 },
                 {
                     path: "",
                     redirect: {
-                        name: 'project'
+                        name: 'myproject'
                     }
                 },
                 {
