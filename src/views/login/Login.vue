@@ -3,7 +3,7 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-25 19:11:06
- * @LastEditTime: 2019-03-30 16:26:08
+ * @LastEditTime: 2019-03-31 00:18:06
  -->
 <template>
     <div class="wrap">
@@ -79,9 +79,10 @@
                         this.$Message.success({
                             content: "登录成功"
                         })
-                        this.$router.push({
+                        this.$router.replace({
                             path: '/home'
                         })
+                       
                     } else {
                         this.$Message.success({
                             content: "用户密码错误"
