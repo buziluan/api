@@ -2,5 +2,6 @@
 module.exports = {
     // 选项...
     publicPath:"./",
-    outputDir:"api"
+    outputDir:"api",
+    
 }

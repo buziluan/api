@@ -3,7 +3,7 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-19 12:56:43
- * @LastEditTime: 2019-03-27 11:20:53
+ * @LastEditTime: 2019-03-30 22:13:38
  -->
 <template>
 
@@ -40,14 +40,41 @@
                 <router-view />
             </transition>
         </content>
-
         <footer class="footer">三人行出品 ©2019 </footer>
+
     </layout>
 
 </template>
 <script>
+    import {
+        getProList
+    } from "../../api/index.js"
+    import {
+        UPDATE_PROJECTLIST
+    } from "../../store/mutation-types.js"
+    import {
+        mapMutations
+    } from "vuex";
     export default {
-
+        methods: {
+            ...mapMutations([UPDATE_PROJECTLIST]),
+            //获取列表
+            async getProList() {
+                try {
+                    let res = await getProList();
+                    this.UPDATE_PROJECTLIST({
+                        projectList: res.data.data ? res.data.data : []
+                    })
+                } catch (error) {
+                    this.$Message.error({
+                        content: "服务器异常"
+                    })
+                }
+            }
+        },
+        created() {
+            this.getProList()
+        }
     }
 </script>
 <style lang="less" scoped>

@@ -3,7 +3,7 @@
  * @Author: 房旭
  * @Date: 2019-02-17 11:21:05
  * @LastEditors: 房旭
- * @LastEditTime: 2019-03-21 14:05:15
+ * @LastEditTime: 2019-03-30 16:15:12
  */
 //执行严格模式
 "use strict";
@@ -26,7 +26,7 @@ _axios.interceptors.request.use(
     // 发送请求前做什么
     if (!/login$/.test(config.url)) {
       let token = sessionStorage.getItem("token");
-      config.headers.token = token
+      config.headers.Authorization = token
     }
     return config;
   },

@@ -3,28 +3,38 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-27 21:15:48
- * @LastEditTime: 2019-03-27 22:07:56
+ * @LastEditTime: 2019-03-29 22:25:38
  -->
 
 <template>
     <div class="content">
-        <row>
-            <i-form label-position="top">
-                <i-col span="24">
-                    <form-item label="请求路径：">
-                        <i-input readonly value="/user/login">
-                            <span slot="prepend">POST</span>
-                        </i-input>
-                    </form-item>
-                </i-col>
-                <i-col span="24">
-                    <form-item label="参考示例：">
-                        <pre v-html="showData" />
-                        </form-item>
-                </i-col>
-            </i-form>
-        </row>
-
+        <i-form label-position="top">
+            <form-item label="接口描述">
+                <span>登录使用接口</span>
+            </form-item>
+            <form-item label="接口路径">
+                <span>/user/login</span>
+            </form-item>
+            <form-item label="Content-Type">
+                <span>application/json</span>
+            </form-item>
+            <form-item label="请求方法">
+                <span>POST</span>
+            </form-item>
+            <form-item label="请求参数">
+                <i-table :columns="columns1" :data="data1" disabled-hover />
+            </form-item>
+            <form-item label="示例">
+                <pre v-html="showData"></pre>
+            </form-item>
+            <form-item label="响应参数">
+                <i-table :columns="columns1" :data="data1" disabled-hover />
+            </form-item>
+            <form-item label="示例">
+                <pre v-html="showData"></pre>
+            </form-item>
+        </i-form>
+        <back-top :height="0" :bottom="100" :right="100">帆帆帆帆</back-top>
     </div>
 </template>
 <script>
@@ -38,9 +48,44 @@
         data() {
             return {
                 obj: {
-                    name: "房旭",
-                    age: 24,
-                }
+                    username: "admin",
+                    agpassworde: "admin",
+                },
+                columns1: [{
+                        title: '属性',
+                        key: 'property',
+                        align: "left"
+                    },
+                    {
+                        title: '类型',
+                        key: 'className'
+                    },
+                    {
+                        title: '默认值',
+                        key: 'default'
+                    },
+                    {
+                        title: '必填',
+                        key: 'required'
+                    },
+                    {
+                        title: '描述',
+                        key: 'describe'
+                    }
+                ],
+                data1: [{
+                    property: "username",
+                    className: "String",
+                    default: "",
+                    required: "是",
+                    describe: "登录用户名"
+                }, {
+                    property: "password",
+                    className: "String",
+                    default: "",
+                    required: "是",
+                    describe: "登录密码"
+                }]
             }
         },
         computed: {
@@ -54,8 +99,20 @@
     .content {
         width: 100%;
         padding: 0 20px 20px 20px;
+        height: auto;
+        overflow: hidden;
 
-          pre {
+        /deep/ .ivu-form-item-label {
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        /deep/ .ivu-form-item-content {
+            padding: 20px 0px 10px 20px;
+            font-size: 16px;
+        }
+
+        pre {
             padding: 10px;
             margin: 5px;
             width: 100%;
@@ -67,23 +124,17 @@
                 color: red !important;
             }
 
-
-
             /deep/ .number {
-                color: #3E76F7 !important;
+                color: #3e76f7 !important;
             }
-
-
 
             /deep/ .boolean {
-                color: #3E76F7 !important;
+                color: #3e76f7 !important;
             }
-
 
             /deep/ .null {
                 color: magenta !important;
             }
-
 
             /deep/ .key {
                 color: red;

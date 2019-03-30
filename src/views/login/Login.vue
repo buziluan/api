@@ -3,17 +3,18 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-25 19:11:06
- * @LastEditTime: 2019-03-26 15:01:03
+ * @LastEditTime: 2019-03-30 16:26:08
  -->
 <template>
     <div class="wrap">
-        
+
         <div class="login">
             <div class="title">
-               <span> 三人行文档</span>
+                <span> 三人行文档</span>
             </div>
             <i-input type="text" v-model="username" placeholder="用户名" class="input"></i-input>
-            <i-input type="password" placeholder="密码" v-model="password" @on-enter="handleClickSubmit" class="input"></i-input>
+            <i-input type="password" placeholder="密码" v-model="password" @on-enter="handleClickSubmit" class="input">
+            </i-input>
             <i-button type="success" :loading="isLoading" @click="handleClickSubmit">登录</i-button>
         </div>
         <div class="bottom">
@@ -22,43 +23,76 @@
     </div>
 </template>
 <script>
+    import {
+        Login
+    } from "../../api/index.js"
     export default {
         data() {
             return {
-                username:"",//用户名
-                password:"",//密码
-                isLoading:false,//按钮加载
+                username: "", //用户名
+                password: "", //密码
+                isLoading: false, //按钮加载
             }
-           
+
         },
-         methods:{
-                //提交方法
-                handleClickSubmit(){
+        methods: {
+            //提交方法
+            async handleClickSubmit() {
+                try {
                     this.isLoading = true;
-                    // let params = {username:this.username,password:this.password};
-                    if(!this.username){
+                    let params = {
+                        loginName: this.username,
+                        password: this.password
+                    };
+                    if (!this.username) {
                         this.$Message.error({
-                            content:"用户名不能为空"
+                            content: "用户名不能为空"
                         })
                         this.isLoading = false
                         return
                     }
-                    if(!this.password){
+                    if (!this.password) {
                         this.$Message.error({
-                            content:"密码不能为空"
+                            content: "密码不能为空"
                         })
                         this.isLoading = false
                         return
                     }
-                    setTimeout(()=>{
-                        this.isLoading = false
+                    let res = await Login(params, "POST", {
+                        transformRequest: [function (data) {
+                            let ret = ''
+                            for (let it in data) {
+                                ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[
+                                        it]) +
+                                    '&'
+                            }
+                            return ret
+                        }],
+                        headers: {
+                            "Content-Type": 'application/x-www-form-urlencoded;charset=UTF-8'
+                        }
+                    })
+
+                    sessionStorage.setItem("token",res.data)
+                    this.isLoading = false
+                    if (res.status === 200) {
                         this.$Message.success({
-                            content:"登录成功"
+                            content: "登录成功"
                         })
-                        this.$router.push({path:'/home'})
-                    },1000)
+                        this.$router.push({
+                            path: '/home'
+                        })
+                    } else {
+                        this.$Message.success({
+                            content: "用户密码错误"
+                        })
+                    }
+
+                } finally {
+                    this.isLoading = false
                 }
             }
+        }
     }
 </script>
 <style lang="less" scoped>
@@ -79,10 +113,12 @@
             border-radius: 20px;
             display: flex;
             flex-direction: column;
+
             .input {
                 margin-bottom: 30px;
             }
-            .title{
+
+            .title {
                 line-height: 30px;
                 font-size: 34px;
                 font-family: "楷体";
@@ -90,6 +126,7 @@
                 margin-bottom: 40px;
                 color: white;
             }
+
             /deep/ .ivu-input {
                 height: 40px;
             }

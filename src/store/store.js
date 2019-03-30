@@ -2,14 +2,13 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 Vue.use(Vuex)
-
+import mutations from "./mutations"
 export default new Vuex.Store({
     state: {
-        name: "符一涛"
+       projectList:[],//项目集合
+       project:null,//新增的项目
     },
-    mutations: {
-
-    },
+    mutations,
     actions: {
 
     }

@@ -3,13 +3,13 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-27 11:54:00
- * @LastEditTime: 2019-03-27 22:07:12
+ * @LastEditTime: 2019-03-30 23:36:41
  -->
 <template>
     <div>
         <row :gutter="10">
-            <i-col span="6">
-                <i-menu :theme="theme2" active-name="1-1" :open-names="['1']">
+            <i-col span="4">
+                <i-menu :theme="theme2" @on-select="handleSelectMenu">
                     <submenu name="1">
                         <template slot="title">
                             登录模块
@@ -26,7 +26,7 @@
                     </submenu>
                 </i-menu>
             </i-col>
-            <i-col span="18">
+            <i-col span="20">
                 <Tabs type="card">
                     <TabPane label="预览">
                         <preview />
@@ -38,6 +38,9 @@
     </div>
 </template>
 <script>
+    import {
+        handlePro
+    } from "../../api/index.js"
     import Preview from "./Preview.vue"
     export default {
         data() {
@@ -46,13 +49,30 @@
             }
         },
         created() {
-
+            this.getInt()
         },
         computed: {
 
         },
         components: {
             Preview
+        },
+        methods: {
+            //点击列表接口名称后触发事件
+            handleSelectMenu() {
+
+            },
+            //初始化加载
+            async getInt() {
+                let shorthand = this.$route.params.id
+                try {
+                    await handlePro(shorthand, "get")
+                } catch (error) {
+                    this.$Message.error({
+                        content: "服务器异常"
+                    })
+                }
+            }
         }
     }
 </script>

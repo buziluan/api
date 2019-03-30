@@ -3,28 +3,28 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-23 17:30:42
- * @LastEditTime: 2019-03-27 12:50:04
+ * @LastEditTime: 2019-03-30 23:19:39
  -->
 <template>
     <div>
         <card class="item">
             <div slot="title" class="item-title">
-                {{data.title}}
+                {{data.name}}
             </div>
             <div class="item-content">
                 <div class="describe">
-                    这个是描述。 这个是描述。
+                    {{data.description}}
                 </div>
                 <div class="baseurl">
-                    /close
+                    {{data.baseUrl}}
                 </div>
                 <div class="own">
-                    <img :src="require('../assets/public.svg')" alt="">
+                    <img :src="data.open==1?require('../assets/public.svg'):require('../assets/private.svg')" alt="">
                 </div>
                 <div class="operation">
                     <button-group>
-                        <i-button icon="ios-eye" @click="toDetail">查看</i-button>
-                        <i-button icon="ios-trash-outline">删除</i-button>
+                        <i-button icon="ios-eye" @click="toDetail(data.shorthand)">查看</i-button>
+                        <i-button icon="ios-trash-outline" @click="handleClickDelete(data)">删除</i-button>
                     </button-group>
                 </div>
             </div>
@@ -32,6 +32,12 @@
     </div>
 </template>
 <script>
+    import {
+        handlePro
+    } from "../api/index.js"
+    import {
+        DELETE_PROJECT
+    } from "../store/mutation-types.js"
     export default {
         props: {
             data: {
@@ -39,10 +45,54 @@
                 required: true
             }
         },
+        computed: {
+            //项目列表
+            list() {
+                return this.$store.state.projectList
+            }
+        },
         methods: {
             //进入详情页面
-            toDetail() {
-               this.$router.push({path:'detail',params:{id:1}})
+            toDetail(id) {
+                this.$router.push({
+                    path: 'detail/' + id
+                })
+            },
+            //删除项目操作
+            async deleteProject(shorthand) {
+                try {
+                    let res = await handlePro(shorthand, "DELETE")
+                    if (res.data.code == 0) {
+                        let i = 0
+                        this.list.forEach((item, index) => {
+                            if (item.shorthand == shorthand) {
+                                i = index
+                            }
+                        })
+                        this.$store.commit(DELETE_PROJECT, i)
+                        this.$Message.info('删除成功');
+                    }
+
+                } catch (error) {
+                    this.$Message.error({
+                        content: "服务器异常，删除失败"
+                    })
+                } finally {
+                    this.$Modal.remove();
+                }
+
+
+            },
+            //点击删除按钮弹出提示
+            handleClickDelete(data) {
+                this.$Modal.confirm({
+                    title: '删除项目',
+                    content: `是否确认删除${data.name}`,
+                    loading: true,
+                    onOk: () => {
+                        this.deleteProject(data.shorthand)
+                    }
+                });
             }
         }
     }

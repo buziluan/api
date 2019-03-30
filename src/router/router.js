@@ -3,9 +3,10 @@ import Router from 'vue-router'
 import Home from "@/views/home/Home.vue"
 Vue.use(Router)
 
-export default new Router({
+//创建一个路由
+const router = new Router({
     mode: 'hash',
-    base: process.env.BASE_URL,
+    // base: process.env.BASE_URL,
     routes: [{
             path: "/home",
             component: Home,
@@ -22,7 +23,7 @@ export default new Router({
                             name: 'myproject'
                         }
                     }, {
-                        path: "detail",
+                        path: "detail/:id",
                         name: "detail",
                         component: () => import("@/views/details/ProjectDetail.vue")
                     }]
@@ -52,10 +53,44 @@ export default new Router({
         {
             path: "logout",
             name: "logout",
-            redirect: "login",
             beforeEnter: (to, from, next) => {
+                window.sessionStorage.clear()
+                router.replace({
+                    name: 'login'
+                })
                 next()
             }
-        }
+        },
+        {
+            path: "*",
+            redirect: "login"
+        },
     ]
 })
+
+//全局前置守卫
+router.beforeEach((to, from, next) => {
+    let token = window.sessionStorage.getItem("token")
+    if (to.name == 'login') {
+        next()
+    } else {
+        if (token == null) {
+            router.replace({
+                name: 'login'
+            })
+        }
+        next()
+    }
+})
+
+//全局后置守卫
+router.afterEach(() => {
+    let token = window.sessionStorage.getItem("token")
+    if (token == null) {
+        router.replace({
+            name: 'login'
+        })
+    }
+})
+
+export default router

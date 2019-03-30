@@ -3,8 +3,9 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-23 19:43:35
- * @LastEditTime: 2019-03-23 20:26:31
+ * @LastEditTime: 2019-03-30 22:31:08
  */
+import Vue from "vue";
 
 /**
  * @description: json格式化
@@ -34,3 +35,32 @@ export const syntaxHighlight = (json) => {
         }
     );
 }
+
+/**
+ *
+ * @param {*} url:请求的url路径（接口路径）
+ * @param {*} data:请求参数（可以为空）
+ * @param {*} type:请求类型（可以为空，默认为GET，有GET和POST可选）
+ * @param {*} config:其他配置项（可设置请求头，请求超时时间等）
+ */
+export const withAxios = async (
+    url = "",
+    data = {},
+    type = "get",
+    config = {}
+) => {
+    type = type.toUpperCase();
+    if (type == "GET") {
+        return Vue.prototype.$axios.get(url, {
+            params: data,
+            ...config
+        });
+    } else if (type == "POST") {
+        
+        return Vue.prototype.$axios.post(url, data, config);
+
+    } else if (type == "DELETE") {
+
+        return Vue.prototype.$axios.delete(url, data, config);
+    }
+};
