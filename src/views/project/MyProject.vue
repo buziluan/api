@@ -3,7 +3,7 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-27 11:19:32
- * @LastEditTime: 2019-03-30 22:56:24
+ * @LastEditTime: 2019-03-31 19:32:38
  -->
 <template>
     <div class="main">
@@ -27,6 +27,7 @@
 </template>
 <script>
     import ProjectItem from "@/components/ProjectItem.vue"
+    import {UPDATE_TOPRO} from "../../store/mutation-types.js"
     export default {
         components: {
             ProjectItem
@@ -40,7 +41,7 @@
             }
         },
         created() {
-
+           this.$store.commit(UPDATE_TOPRO,false)
         },
         computed: {
             //项目集合

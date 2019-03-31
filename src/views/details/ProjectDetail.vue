@@ -3,38 +3,40 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-27 11:54:00
- * @LastEditTime: 2019-03-30 23:36:41
+ * @LastEditTime: 2019-03-31 23:00:18
  -->
 <template>
-    <div>
-        <row :gutter="10">
+    <div class="project-content1">
+        <row :gutter="10" v-if="moduleList.length>0">
             <i-col span="4">
-                <i-menu :theme="theme2" @on-select="handleSelectMenu">
-                    <submenu name="1">
+                <i-menu :theme="theme2" @on-select="handleSelectMenu" accordion @on-open-change="handleSelectModule">
+                    <submenu :name="item.moduleId" v-for="item in moduleList" :key="item.moduleId">
                         <template slot="title">
-                            登录模块
+                            {{item.moduleName}}
                         </template>
-                        <menu-item name="1-1">login</menu-item>
-                        <menu-item name="1-2">logout</menu-item>
-                    </submenu>
-                    <submenu name="2">
-                        <template slot="title">
-                            商品模块
-                        </template>
-                        <menu-item name="2-1">商品列表</menu-item>
-                        <menu-item name="2-2">商品详情</menu-item>
+                        <menu-item :name="api.apiId" v-for="api in item.apiList" :key="api.apiId">{{api.apiName}}
+                        </menu-item>
                     </submenu>
                 </i-menu>
             </i-col>
             <i-col span="20">
-                <Tabs type="card">
-                    <TabPane label="预览">
+                <tabs type="card">
+                    <tab-pane label="预览">
                         <preview />
-                    </TabPane>
-                    <TabPane label="编辑">标签二的内容</TabPane>
-                </Tabs>
+                    </tab-pane>
+                    <tab-pane label="编辑">标签二的内容</tab-pane>
+                </tabs>
             </i-col>
         </row>
+        <row v-else>
+            <i-col span="24">
+                <div class="notdata">
+                    <img :src="require('../../assets/null.svg')" alt="">
+                    <p>暂无数据</p>
+                </div>
+            </i-col>
+        </row>
+        <spin v-if="isSpin" size="large" fix />
     </div>
 </template>
 <script>
@@ -42,17 +44,31 @@
         handlePro
     } from "../../api/index.js"
     import Preview from "./Preview.vue"
+    import {
+        UPDATE_TOPRO,
+        UPDATE_MODULES
+    } from "../../store/mutation-types.js"
     export default {
         data() {
             return {
                 theme2: 'light',
+                //加载框
+                isSpin: false,
+                //moduleid
+                moduleId: '',
+                //apiid
+                apiId: ''
             }
         },
         created() {
+            this.$store.commit(UPDATE_TOPRO, true)
             this.getInt()
         },
         computed: {
-
+            //项目集合
+            moduleList() {
+                return this.$store.state.module
+            }
         },
         components: {
             Preview
@@ -62,15 +78,24 @@
             handleSelectMenu() {
 
             },
+            handleSelectModule(data) {
+                this.moduleId = data
+            },
             //初始化加载
             async getInt() {
                 let shorthand = this.$route.params.id
+                this.isSpin = true
                 try {
-                    await handlePro(shorthand, "get")
+                    let res = await handlePro(shorthand, "get")
+                    this.$store.commit(UPDATE_MODULES, {
+                        module: res.data.data.moduleList
+                    })
                 } catch (error) {
                     this.$Message.error({
                         content: "服务器异常"
                     })
+                } finally {
+                    this.isSpin = false
                 }
             }
         }
@@ -80,5 +105,23 @@
     /deep/ .ivu-menu-light {
         background-color: transparent;
         width: 100% !important;
+    }
+
+    /deep/ .ivu-menu {
+        z-index: 7;
+    }
+
+    .project-content1 {
+        position: relative;
+
+        .notdata {
+            width: 100%;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            font-size: 20px;
+        }
     }
 </style>

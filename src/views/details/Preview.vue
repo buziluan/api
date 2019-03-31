@@ -3,23 +3,31 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-27 21:15:48
- * @LastEditTime: 2019-03-29 22:25:38
+ * @LastEditTime: 2019-03-31 22:54:49
  -->
 
 <template>
     <div class="content">
         <i-form label-position="top">
             <form-item label="接口描述">
-                <span>登录使用接口</span>
+                <div class="content-item">
+                    <span>登录使用接口</span>
+                </div>
             </form-item>
             <form-item label="接口路径">
-                <span>/user/login</span>
+                <div class="content-item">
+                    <span>/user/login</span>
+                </div>
             </form-item>
             <form-item label="Content-Type">
-                <span>application/json</span>
+                <div class="content-item">
+                    <span>application/json</span>
+                </div>
             </form-item>
             <form-item label="请求方法">
-                <span>POST</span>
+                <div class="content-item">
+                    <span>POST</span>
+                </div>
             </form-item>
             <form-item label="请求参数">
                 <i-table :columns="columns1" :data="data1" disabled-hover />
@@ -49,7 +57,7 @@
             return {
                 obj: {
                     username: "admin",
-                    agpassworde: "admin",
+                    password: "admin",
                 },
                 columns1: [{
                         title: '属性',
@@ -101,6 +109,15 @@
         padding: 0 20px 20px 20px;
         height: auto;
         overflow: hidden;
+        min-width: 500px;
+        .content-item {
+            padding: 10px;
+            margin: 5px;
+            width: 100%;
+            text-align: left;
+            background-color: #FCE2E3;
+            border-radius: 10px;
+        }
 
         /deep/ .ivu-form-item-label {
             font-size: 20px;

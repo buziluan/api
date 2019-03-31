@@ -3,7 +3,7 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-25 19:11:06
- * @LastEditTime: 2019-03-31 00:18:06
+ * @LastEditTime: 2019-03-31 22:18:34
  -->
 <template>
     <div class="wrap">
@@ -72,8 +72,7 @@
                             "Content-Type": 'application/x-www-form-urlencoded;charset=UTF-8'
                         }
                     })
-
-                    sessionStorage.setItem("token",res.data)
+                    sessionStorage.setItem("token",res.data.data)
                     this.isLoading = false
                     if (res.status === 200) {
                         this.$Message.success({

@@ -3,7 +3,7 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-23 17:30:42
- * @LastEditTime: 2019-03-30 23:19:39
+ * @LastEditTime: 2019-03-31 18:05:01
  -->
 <template>
     <div>
@@ -16,7 +16,7 @@
                     {{data.description}}
                 </div>
                 <div class="baseurl">
-                    {{data.baseUrl}}
+                    /{{data.baseUrl}}
                 </div>
                 <div class="own">
                     <img :src="data.open==1?require('../assets/public.svg'):require('../assets/private.svg')" alt="">
@@ -120,19 +120,19 @@
 
         .describe {
             width: 100%;
-            height: 30px;
+            height: 90px;
             line-height: 30px;
             overflow-y: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
-            -webkit-line-clamp: 1;
+            -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             margin: 0 auto;
             margin-bottom: 10px;
-            background-color: #515a6e;
+            background-color: rgb(245, 245, 245);
             padding: 0 5px 0 5px;
             border-radius: 7px;
-            color: white;
+            color: black;
         }
 
         .baseurl {
@@ -140,10 +140,10 @@
             height: 30px;
             line-height: 30px;
             margin: 0 auto;
-            background-color: #808695;
+            background-color: rgb(245, 245, 245);
             padding: 0 10px 0 10px;
             border-radius: 7px;
-            color: white;
+            color: black;
         }
 
         .own {

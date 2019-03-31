@@ -3,7 +3,7 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-30 15:28:59
- * @LastEditTime: 2019-03-31 00:19:13
+ * @LastEditTime: 2019-03-31 23:00:32
  */
 const host = 'http://59.110.138.185/epdq';
 
@@ -38,6 +38,8 @@ const addPro = (data, type, config) => withAxios(host + '/project', data, type, 
  * @return: 
  */
 const handlePro = (id, type, config) => withAxios(host + '/project/' + id, {}, type, config)
+
+
 
 export {
     Login,
