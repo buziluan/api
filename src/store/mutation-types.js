@@ -3,7 +3,7 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-04 14:43:56
- * @LastEditTime: 2019-03-31 21:43:30
+ * @LastEditTime: 2019-04-02 22:44:30
  */
 /**
  * @description: 修改（获取）项目列表
@@ -40,4 +40,24 @@ export const UPDATE_TOPRO = 'UPDATE_TOPRO'
  */
 export const UPDATE_MODULES = 'UPDATE_MODULES'
 
+/**
+ * @description: 添加新的模块
+ * @param {type} 
+ * @return: 
+ */
+export const ADD_MODULE = 'ADD_MODULE'
 
+
+/**
+ * @description: 修改模块信息
+ * @param {type} 
+ * @return: 
+ */
+export const UPDATE_ONEMODULE = 'UPDATE_ONEMODULE'
+
+/**
+ * @description: 清空模块集合
+ * @param {type} 
+ * @return: 
+ */
+export const EMPTY_MODULE = 'EMPTY_MODULE'

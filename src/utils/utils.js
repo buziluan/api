@@ -3,7 +3,7 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-23 19:43:35
- * @LastEditTime: 2019-03-30 22:31:08
+ * @LastEditTime: 2019-04-02 22:32:53
  */
 import Vue from "vue";
 
@@ -62,5 +62,8 @@ export const withAxios = async (
     } else if (type == "DELETE") {
 
         return Vue.prototype.$axios.delete(url, data, config);
+    }else if (type == "PUT") {
+
+        return Vue.prototype.$axios.put(url, data, config);
     }
 };

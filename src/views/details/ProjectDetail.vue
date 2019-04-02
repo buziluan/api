@@ -3,11 +3,12 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-27 11:54:00
- * @LastEditTime: 2019-03-31 23:00:18
+ * @LastEditTime: 2019-04-02 22:27:45
  -->
 <template>
     <div class="project-content1">
         <row :gutter="10" v-if="moduleList.length>0">
+            <!--  -->
             <i-col span="4">
                 <i-menu :theme="theme2" @on-select="handleSelectMenu" accordion @on-open-change="handleSelectModule">
                     <submenu :name="item.moduleId" v-for="item in moduleList" :key="item.moduleId">
@@ -24,7 +25,12 @@
                     <tab-pane label="预览">
                         <preview />
                     </tab-pane>
-                    <tab-pane label="编辑">标签二的内容</tab-pane>
+                    <tab-pane label="编辑">
+                        
+                    </tab-pane>
+                    <tab-pane label="新增">
+                        <add-api />
+                    </tab-pane>
                 </tabs>
             </i-col>
         </row>
@@ -44,9 +50,11 @@
         handlePro
     } from "../../api/index.js"
     import Preview from "./Preview.vue"
+    import AddApi from "./AddAPI.vue"
     import {
         UPDATE_TOPRO,
-        UPDATE_MODULES
+        UPDATE_MODULES,
+        EMPTY_MODULE
     } from "../../store/mutation-types.js"
     export default {
         data() {
@@ -71,13 +79,15 @@
             }
         },
         components: {
-            Preview
+            Preview,
+            AddApi
         },
         methods: {
             //点击列表接口名称后触发事件
             handleSelectMenu() {
-
+               
             },
+            //点击获取模块id
             handleSelectModule(data) {
                 this.moduleId = data
             },
@@ -97,7 +107,11 @@
                 } finally {
                     this.isSpin = false
                 }
-            }
+            },
+        },
+        beforeDestroy(){
+            //组件销毁之前清空模块集合
+             this.$store.commit(EMPTY_MODULE)
         }
     }
 </script>

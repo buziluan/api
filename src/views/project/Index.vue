@@ -3,20 +3,21 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-22 23:35:40
- * @LastEditTime: 2019-03-31 22:51:22
+ * @LastEditTime: 2019-04-02 23:01:49
  -->
 <template>
     <section class="project-content">
         <div class="nav">
             <breadcrumb>
-                <breadcrumb-item :to="{name:'myproject'}">我的项目</breadcrumb-item>
-                <!--  <breadcrumb-item :to="{name:'detail'}">演示项目</breadcrumb-item> -->
+                <breadcrumb-item to="/home/project/me">我的项目</breadcrumb-item>
+                <breadcrumb-item>演示项目</breadcrumb-item>
             </breadcrumb>
             <transition name="fade" mode="out-in">
                 <i-button @click="isShowAdd=!isShowAdd" v-if="!toPro">创建新项目</i-button>
                 <div v-else>
                     <i-button @click="isShowModule=!isShowModule" style="margin-right:10px;">创建新模块</i-button>
-                    <i-button>创建新接口</i-button>
+                    <i-button @click="isShowUpdateModule=!isShowUpdateModule" v-show="moduleList.length>0">修改模块
+                    </i-button>
                 </div>
             </transition>
         </div>
@@ -50,12 +51,29 @@
         <modal v-model="isShowModule" title="创建新的模块" width="500" :loading="true" @on-ok="handleClickAddModule">
             <i-form label-position="top" ref="module" :model="moduleData" :rules="ruleModule">
                 <form-item label="模块名称" prop="name">
-                    <i-input type="text" v-model="moduleData.name" placeholder="请输入项目名称"></i-input>
+                    <i-input type="text" v-model="moduleData.name" placeholder="请输入模块名称"></i-input>
                 </form-item>
                 <form-item label="模块路径">
-                    <i-input type="text" v-model="moduleData.baseUrl" placeholder="请输入项目根路径">
+                    <i-input type="text" v-model="moduleData.uri" placeholder="请输入模块路径">
                         <span slot="prepend">/</span>
                     </i-input>
+                </form-item>
+            </i-form>
+        </modal>
+
+        <modal v-model="isShowUpdateModule" title="修改模块信息" width="500" :loading="true" @on-ok="handleClickUpdateModule">
+            <i-form label-position="top" ref="updateModule" :model="moduleUpdateData">
+                <form-item label="模块">
+                    <i-select v-model="moduleUpdateData.moduleId" @on-change="handleSelectModule">
+                        <i-option v-for="item in moduleList" :key="item.moduleId" :value="item.moduleId">
+                            {{item.moduleName}}</i-option>
+                    </i-select>
+                </form-item>
+                <form-item label="模块名称">
+                    <i-input v-model="moduleUpdateData.name" />
+                </form-item>
+                <form-item label="模块路径">
+                    <i-input v-model="moduleUpdateData.uri" />
                 </form-item>
             </i-form>
         </modal>
@@ -63,10 +81,14 @@
 </template>
 <script>
     import {
-        addPro
+        addPro,
+        addModule,
+        handleModule
     } from "../../api/index.js"
     import {
-        ADD_PROJECT
+        ADD_PROJECT,
+        ADD_MODULE,
+        UPDATE_ONEMODULE
     } from "../../store/mutation-types.js"
     export default {
         data() {
@@ -81,7 +103,13 @@
                 //模块表单对象
                 moduleData: {
                     name: '',
-                    baseUrl: ''
+                    uri: ''
+                },
+                //修改模块表单对象
+                moduleUpdateData: {
+                    moduleId: '',
+                    name: '',
+                    uri: ''
                 },
                 //项目验证对象
                 ruleCustom: {
@@ -114,12 +142,22 @@
                         trigger: 'blur'
                     }]
                 },
+                //修改模块验证对象
+                ruleModuleUpdate: {
+                    moduleId: [{
+                        required: true,
+                        message: '请选择模块',
+                        trigger: 'change'
+                    }]
+                },
                 //显示新增项目窗口
                 isShowAdd: false,
                 //显示新增模块窗口
                 isShowModule: false,
                 //显示哪个按钮
-                isShowBtn: this.$route.name == 'myproject'
+                isShowBtn: this.$route.name == 'myproject',
+                //显示修改模块接口
+                isShowUpdateModule: false,
             }
         },
         components: {},
@@ -152,10 +190,61 @@
             async handleClickAddModule() {
                 let validate = await this.$refs.module.validate()
                 if (validate) {
-                    // let id = this.$route.params.id
-
-                    this.isShowModule = false
+                    try {
+                        let id = this.$route.params.id
+                        let res = await addModule(id, this.moduleData, "post")
+                        this.$store.commit(ADD_MODULE, res.data.data)
+                        this.$Message.success({
+                            content: "创建成功"
+                        })
+                        this.$refs.module.resetFields();
+                    } catch (error) {
+                        this.$Message.error({
+                            content: "服务器异常"
+                        })
+                    } finally {
+                        this.isShowModule = false
+                    }
                 }
+            },
+            //确认修改模块
+            async handleClickUpdateModule() {
+
+                try {
+                    if (!this.moduleUpdateData.moduleId) {
+                        this.$Message.error({
+                            content: "请先选择模块"
+                        })
+                        this.isShowUpdateModule = true;
+                        return
+                    }
+                    let projectId = this.$route.params.id
+                    let data = {
+                        name: this.moduleUpdateData.name,
+                        uri: this.moduleUpdateData.uri
+                    }
+                    let res = await handleModule(projectId, this.moduleUpdateData.moduleId, data, "PUT")
+                    this.$store.commit(UPDATE_ONEMODULE, res.data.data)
+                    this.$Message.success({
+                        content: "修改成功"
+                    })
+                    this.moduleUpdateData = {}
+                } catch (error) {
+                    this.$Message.error({
+                        content: "服务器异常"
+                    })
+                } finally {
+                    this.isShowUpdateModule = false;
+                }
+            },
+            //选择模块
+            handleSelectModule(value) {
+                if (value == '' || value == undefined || value == null) {
+                    return
+                }
+                let module = this.moduleList.filter(item => item.moduleId == value)[0]
+                this.moduleUpdateData.name = module.moduleName;
+                this.moduleUpdateData.uri = module.uri;
             }
         },
         created() {
@@ -165,6 +254,10 @@
             //是否进入项目
             toPro() {
                 return this.$store.state.toPro
+            },
+            //项目集合
+            moduleList() {
+                return this.$store.state.module
             }
         }
     }

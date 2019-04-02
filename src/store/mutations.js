@@ -3,14 +3,17 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-04 14:49:21
- * @LastEditTime: 2019-03-31 21:44:16
+ * @LastEditTime: 2019-04-02 22:47:29
  */
 import {
     UPDATE_PROJECTLIST,
     ADD_PROJECT,
     DELETE_PROJECT,
     UPDATE_TOPRO,
-    UPDATE_MODULES
+    UPDATE_MODULES,
+    ADD_MODULE,
+    EMPTY_MODULE,
+    UPDATE_ONEMODULE
 } from './mutation-types'
 export default {
 
@@ -47,6 +50,34 @@ export default {
      */
     [UPDATE_MODULES](state, payload) {
         state.module = payload.module
+    },
+
+    /**
+     * @description:清空modules
+     */
+    [EMPTY_MODULE](state) {
+        state.module = []
+    },
+
+    /**
+     * @description:添加modules
+     */
+    [ADD_MODULE](state, module) {
+        state.module.push(module)
+    },
+
+    /**
+     * @description: 修改模块属性
+     * @param {type} 
+     * @return: 
+     */
+    [UPDATE_ONEMODULE](state, payload) {
+        state.module = state.module.map(item => {
+            if (item.moduleId == payload.moduleId) {
+                item = payload
+            }
+            return item
+        });
     }
 
 }

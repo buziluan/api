@@ -25,13 +25,7 @@ const router = new Router({
                     }, {
                         path: "detail/:id",
                         name: "detail",
-                        component: () => import("@/views/details/ProjectDetail.vue"),
-                        beforeRouteLeave(to, from, next) {
-                            this.$store.commit('UPDATE_MODULES', {
-                                module: []
-                            })
-                            next()
-                        }
+                        component: () => import("@/views/details/ProjectDetail.vue")
                     }]
                 },
                 {
