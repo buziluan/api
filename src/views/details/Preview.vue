@@ -3,7 +3,7 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-27 21:15:48
- * @LastEditTime: 2019-03-31 22:54:49
+ * @LastEditTime: 2019-04-05 16:51:58
  -->
 
 <template>
@@ -42,7 +42,7 @@
                 <pre v-html="showData"></pre>
             </form-item>
         </i-form>
-        <back-top :height="0" :bottom="100" :right="100">帆帆帆帆</back-top>
+       
     </div>
 </template>
 <script>
@@ -115,8 +115,9 @@
             margin: 5px;
             width: 100%;
             text-align: left;
-            background-color: #FCE2E3;
+            background-color: #909399;
             border-radius: 10px;
+            color: white;
         }
 
         /deep/ .ivu-form-item-label {

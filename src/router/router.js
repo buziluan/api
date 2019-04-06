@@ -7,7 +7,8 @@ Vue.use(Router)
 const router = new Router({
     mode: 'hash',
     // base: process.env.BASE_URL,
-    routes: [{
+    routes: [
+        {
             path: "/home",
             component: Home,
             children: [{
@@ -33,11 +34,6 @@ const router = new Router({
                     redirect: {
                         name: 'myproject'
                     }
-                },
-                {
-                    path: "test",
-                    name: 'test',
-                    component: () => import("@/views/test/Test.vue")
                 }
             ]
         },
@@ -65,13 +61,18 @@ const router = new Router({
             path: "*",
             redirect: "login"
         },
+        {
+            path: "/test",
+            name: 'test',
+            component: () => import("@/views/test/Test.vue")
+        }
     ]
 })
 
 //全局前置守卫
 router.beforeEach((to, from, next) => {
     let token = window.sessionStorage.getItem("token")
-    if (to.name == 'login') {
+    if (to.name == 'login'||to.name=='test') {
         next()
     } else {
         if (token == null) {
