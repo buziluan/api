@@ -3,11 +3,11 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-23 18:50:19
- * @LastEditTime: 2019-04-06 21:52:09
+ * @LastEditTime: 2019-04-06 23:06:33
  -->
 <template>
     <div class="main">
-        <tree-input :data="item" v-for="item in showData" :key="item.name"/>
+        <tree-input :data="showData" />
     </div>
 </template>
 <script>
@@ -20,34 +20,19 @@ export default {
                 age: 24,
             },
             data: "1",
-            showData: [
-                {
-                    name: '1',
-                    child: [
-                        { name: '11', child: [] },
-                        { name: '12', child: [] },
-                        { name: '13', child: [] }
-                    ]
-                }, {
-                    name: '2',
-                    child: [
-                        { name: '21', child: [] },
-                        { name: '22', child: [] },
-                        { name: '23', child: [] }
-                    ]
-                }, {
-                    name: '3',
-                    child: [
-                        { name: '31', child: [] },
-                        { name: '32', child: [] },
-                        { name: '33', child: [] }
-                    ]
-                }
-            ]
+            showData: {
+                name: '1',
+                child: [
+                    { name: '11', child: [{ name: '111', child: [] }, { name: '112', child: [] }, { name: '113', child: [] }] },
+                    { name: '12', child: [] },
+                    { name: '13', child: [] }
+                ]
+            }
+
         }
     },
     computed: {
-       
+
     },
     components: {
         TreeInput

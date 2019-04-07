@@ -3,7 +3,7 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-04 14:49:21
- * @LastEditTime: 2019-04-02 22:47:29
+ * @LastEditTime: 2019-04-07 23:04:29
  */
 import {
     UPDATE_PROJECTLIST,
@@ -13,7 +13,8 @@ import {
     UPDATE_MODULES,
     ADD_MODULE,
     EMPTY_MODULE,
-    UPDATE_ONEMODULE
+    UPDATE_ONEMODULE,
+    ADD_API
 } from './mutation-types'
 export default {
 
@@ -77,6 +78,18 @@ export default {
                 item = payload
             }
             return item
+        });
+    },
+    /**
+     * @description: 添加api
+     * @param {type} 
+     * @return: 
+     */
+    [ADD_API](state,payload){
+        state.module.forEach(item => {
+            if(item.moduleId == payload.moduleId){
+                item.apiList.push(payload.api)
+            }
         });
     }
 

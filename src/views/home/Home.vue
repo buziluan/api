@@ -3,7 +3,7 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-19 12:56:43
- * @LastEditTime: 2019-03-30 22:13:38
+ * @LastEditTime: 2019-04-07 22:41:01
  -->
 <template>
 
@@ -19,16 +19,16 @@
                             <Icon type="ios-folder-open" />
                             我的项目
                         </menu-item>
-                        <menu-item name="2" :to="{name:'test'}">
+                        <!-- <menu-item name="2" :to="{name:'test'}">
                             <Icon type="ios-build" />
                             我的配置
-                        </menu-item>
+                        </menu-item> -->
                         <submenu name="3">
                             <template slot="title">
                                 <Icon type="md-person" />
                                 我的信息
                             </template>
-                            <menu-item name="3-1">编辑</menu-item>
+                            <!-- <menu-item name="3-1">编辑</menu-item> -->
                             <menu-item name="3-2" :to="{name:'logout'}">退出</menu-item>
                         </submenu>
                     </div>

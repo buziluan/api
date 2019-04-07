@@ -3,9 +3,9 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-30 15:28:59
- * @LastEditTime: 2019-04-02 23:02:19
+ * @LastEditTime: 2019-04-07 22:19:18
  */
-const host = 'http://59.110.138.185/epdq';
+const host = 'http://59.110.138.185/epd';
 
 import {
     withAxios
@@ -53,11 +53,27 @@ const addModule = (projectId, data, type, config) => withAxios(host + '/project/
  */
 const handleModule = (projectId, moduleId, data, type, config) => withAxios(host + `/project/${projectId}/module/${moduleId}`, data, type, config)
 
+/**
+ * @description: 添加接口
+ * @param {type} 
+ * @return: 
+ */
+const addApi = (projectId, moduleId, data, type, config) => withAxios(host + `/project/${projectId}/module/${moduleId}/api`, data, type, config)
+
+/**
+ * @description: 操作接口
+ * @param {type} 
+ * @return: 
+ */
+const handleApi = (projectId, moduleId,apiId, data, type, config) => withAxios(host + `/project/${projectId}/module/${moduleId}/api/${apiId}`, data, type, config)
+
 export {
     Login,
     getProList,
     addPro,
     handlePro,
     addModule,
-    handleModule
+    handleModule,
+    addApi,
+    handleApi
 }

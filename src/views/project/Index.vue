@@ -3,7 +3,7 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-22 23:35:40
- * @LastEditTime: 2019-04-02 23:01:49
+ * @LastEditTime: 2019-04-07 21:50:24
  -->
 <template>
     <section class="project-content">
@@ -50,8 +50,8 @@
 
         <modal v-model="isShowModule" title="创建新的模块" width="500" :loading="true" @on-ok="handleClickAddModule">
             <i-form label-position="top" ref="module" :model="moduleData" :rules="ruleModule">
-                <form-item label="模块名称" prop="name">
-                    <i-input type="text" v-model="moduleData.name" placeholder="请输入模块名称"></i-input>
+                <form-item label="模块名称" prop="moduleName">
+                    <i-input type="text" v-model="moduleData.moduleName" placeholder="请输入模块名称"></i-input>
                 </form-item>
                 <form-item label="模块路径">
                     <i-input type="text" v-model="moduleData.uri" placeholder="请输入模块路径">
@@ -70,7 +70,7 @@
                     </i-select>
                 </form-item>
                 <form-item label="模块名称">
-                    <i-input v-model="moduleUpdateData.name" />
+                    <i-input v-model="moduleUpdateData.moduleName" />
                 </form-item>
                 <form-item label="模块路径">
                     <i-input v-model="moduleUpdateData.uri" />
@@ -102,13 +102,13 @@
                 },
                 //模块表单对象
                 moduleData: {
-                    name: '',
+                    moduleName: '',
                     uri: ''
                 },
                 //修改模块表单对象
                 moduleUpdateData: {
                     moduleId: '',
-                    name: '',
+                    moduleName: '',
                     uri: ''
                 },
                 //项目验证对象
@@ -136,7 +136,7 @@
                 },
                 //模块验证对象
                 ruleModule: {
-                    name: [{
+                    moduleName: [{
                         required: true,
                         message: '模块名称不能为空',
                         trigger: 'blur'
@@ -220,7 +220,7 @@
                     }
                     let projectId = this.$route.params.id
                     let data = {
-                        name: this.moduleUpdateData.name,
+                        moduleName: this.moduleUpdateData.moduleName,
                         uri: this.moduleUpdateData.uri
                     }
                     let res = await handleModule(projectId, this.moduleUpdateData.moduleId, data, "PUT")
@@ -243,7 +243,7 @@
                     return
                 }
                 let module = this.moduleList.filter(item => item.moduleId == value)[0]
-                this.moduleUpdateData.name = module.moduleName;
+                this.moduleUpdateData.moduleName = module.moduleName;
                 this.moduleUpdateData.uri = module.uri;
             }
         },

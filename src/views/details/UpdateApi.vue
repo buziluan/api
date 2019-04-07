@@ -1,9 +1,9 @@
 <!--
- * @Description: 新增接口
+ * @Description: 修改接口
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-04-02 18:14:03
- * @LastEditTime: 2019-04-07 23:05:36
+ * @LastEditTime: 2019-04-07 23:11:21
  -->
 <template>
     <div class="add-content">
@@ -11,22 +11,22 @@
             <row :gutter="20">
                 <i-col span="12">
                     <form-item label="接口名称" class="formitem">
-                        <i-input v-model="request.apiName" />
+                        <i-input v-model="data.apiName" />
                     </form-item>
                 </i-col>
                 <i-col span="12">
                     <form-item label="接口描述" class="formitem">
-                        <i-input v-model="request.description" />
+                        <i-input v-model="data.description" />
                     </form-item>
                 </i-col>
                 <i-col span="12">
                     <form-item label="接口路径" class="formitem">
-                        <i-input v-model="request.uri"></i-input>
+                        <i-input v-model="data.uri"></i-input>
                     </form-item>
                 </i-col>
                 <i-col span="12">
                     <form-item label="请求方法" class="formitem">
-                        <i-select v-model="request.method">
+                        <i-select v-model="data.method">
                             <i-option value="GET">GET</i-option>
                             <i-option value="POST">POST</i-option>
                             <i-option value="PUT">PUT</i-option>
@@ -36,7 +36,7 @@
                 </i-col>
                 <i-col span="12">
                     <form-item label="所属模块" class="formitem">
-                        <i-select v-model="request.moduleId">
+                        <i-select v-model="data.moduleId">
                             <i-option
                                 :value="item.moduleId"
                                 v-for="(item, index) in moduleList"
@@ -48,7 +48,7 @@
                 </i-col>
                 <i-col span="12">
                     <form-item label="Content-Type" class="formitem">
-                        <i-select v-model="request.contentType">
+                        <i-select v-model="data.contentType">
                             <i-option value="application/x-www-form-urlencoded"
                                 >application/x-www-form-urlencoded</i-option
                             >
@@ -73,7 +73,7 @@
                                 >
                                 <tree-input
                                     :data="item"
-                                    v-for="(item, index) in param"
+                                    v-for="(item, index) in JSON.parse(data.requestParam)"
                                     :key="index"
                                     @on-delete="handleClickDelete"
                                 />
@@ -94,7 +94,7 @@
                                 >
                                 <tree-input
                                     :data="item"
-                                    v-for="(item, index) in param1"
+                                    v-for="(item, index) in JSON.parse(data.responseParam)"
                                     :key="index"
                                     @on-delete="handleClickDelete1"
                                 />
@@ -105,10 +105,7 @@
                 </i-col>
                 <i-col span="24">
                     <div style="margin-top:20px;">
-                        <i-button
-                            icon="md-add"
-                            @click="handliClickAddApi"
-                            :loading="isBtnLoading"
+                        <i-button icon="md-add" @click="handliClickAddApi"
                             >确认添加</i-button
                         >
                     </div>
@@ -121,10 +118,9 @@
 import TreeInput from "@/components/TreeInput.vue"
 import { deleteDataItem, paramToObject, syntaxHighlight } from "../../utils/utils.js"
 import { addApi } from "@/api/index.js"
-import { ADD_API } from "../../store/mutation-types.js"
 export default {
     props: {
-
+        data:[Object]
     },
     data() {
         return {
@@ -153,8 +149,6 @@ export default {
                 require: '',
                 property: []
             }],
-            //按钮加载
-            isBtnLoading: false
         }
     },
     computed: {
@@ -203,40 +197,7 @@ export default {
             let projectId = this.$route.params.id
             let moduleId = params.moduleId
             delete params.moduleId
-            try {
-                this.isBtnLoading = true
-                let res = await addApi(projectId, moduleId, params, 'POST')
-                if (res.data.code == 0) {
-                    this.$Message.success("创建成功")
-                    this.$store.commit(ADD_API, {
-                        moduleId: moduleId,
-                        api: res.data.data
-                    })
-                    this.request = {}
-                    this.param = [{
-                        name: '',
-                        cate: '',
-                        default: '',
-                        describe: '',
-                        id: '1',
-                        require: '',
-                        property: []
-                    }]
-                    this.param1 = [{
-                        name: '',
-                        cate: '',
-                        default: '',
-                        describe: '',
-                        id: '1',
-                        require: '',
-                        property: []
-                    }]
-                }
-
-            } finally {
-                this.isBtnLoading = false
-            }
-
+            // let res = await addApi(projectId, moduleId, params,'POST')
         },
         //删除参数(响应)
         handleClickDelete1(id) {

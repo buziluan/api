@@ -3,7 +3,7 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-23 19:43:35
- * @LastEditTime: 2019-04-02 22:32:53
+ * @LastEditTime: 2019-04-07 21:10:56
  */
 import Vue from "vue";
 
@@ -56,14 +56,53 @@ export const withAxios = async (
             ...config
         });
     } else if (type == "POST") {
-        
+
         return Vue.prototype.$axios.post(url, data, config);
 
     } else if (type == "DELETE") {
 
         return Vue.prototype.$axios.delete(url, data, config);
-    }else if (type == "PUT") {
+    } else if (type == "PUT") {
 
         return Vue.prototype.$axios.put(url, data, config);
     }
 };
+
+/**
+ * @description: 参数列表删除方法
+ * @param {type} 
+ * @return: 
+ */
+export const deleteDataItem = (data, id) => {
+    let temp = data
+    temp.forEach((item, index) => {
+        if (item.id === id) {
+            temp.splice(index, 1)
+        } else if (item.property.length > 0) {
+            deleteDataItem(item.property, id)
+        }
+    });
+
+    return temp
+}
+
+/**
+ * @description: 将参数列表格式化成一个对象。
+ * @param {type} 
+ * @return: 
+ */
+export const paramToObject = (data) => {
+    let resultObj = {}
+    data.forEach(item => {
+        if (item.cate == 'String') {
+            resultObj[item.name] = item.default ? item.default : ''
+        } else if (item.cate == 'Array') {
+            resultObj[item.name] = item.default ? item.default : []
+        } else if (item.cate == 'Number') {
+            resultObj[item.name] = item.default ? Number(item.default) : 0
+        } else if (item.cate == 'Object') {
+            resultObj[item.name] = paramToObject(item.property)
+        }
+    })
+    return resultObj
+}
