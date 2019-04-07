@@ -3,9 +3,9 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-30 15:28:59
- * @LastEditTime: 2019-04-07 22:19:18
+ * @LastEditTime: 2019-04-07 23:29:22
  */
-const host = 'http://59.110.138.185/epd';
+const host = 'http://59.110.138.185/epdq';
 
 import {
     withAxios
