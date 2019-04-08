@@ -3,7 +3,7 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-27 21:15:48
- * @LastEditTime: 2019-04-07 22:38:41
+ * @LastEditTime: 2019-04-08 22:16:05
  -->
 
 <template>
@@ -16,7 +16,7 @@
             </form-item>
             <form-item label="接口路径">
                 <div class="content-item">
-                    <span>/user/login</span>
+                    <span>{{data.showUri}}</span>
                 </div>
             </form-item>
             <form-item label="Content-Type">

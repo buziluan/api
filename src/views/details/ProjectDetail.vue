@@ -3,32 +3,19 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-27 11:54:00
- * @LastEditTime: 2019-04-07 23:02:43
+ * @LastEditTime: 2019-04-08 23:50:32
  -->
 <template>
     <div class="project-content1">
         <row :gutter="10" v-if="moduleList.length > 0">
             <!--  -->
             <i-col span="4">
-                <i-menu
-                    :theme="theme2"
-                    @on-select="handleSelectMenu"
-                    accordion
-                    @on-open-change="handleSelectModule"
-                >
-                    <submenu
-                        :name="item.moduleId"
-                        v-for="item in moduleList"
-                        :key="item.moduleId"
-                    >
+                <i-menu :theme="theme2" @on-select="handleSelectMenu"  @on-open-change="handleSelectModule">
+                    <submenu :name="item.moduleId" v-for="item in moduleList" :key="item.moduleId">
                         <template slot="title">
                             {{ item.moduleName }}
                         </template>
-                        <menu-item
-                            :name="api.apiId"
-                            v-for="api in item.apiList"
-                            :key="api.apiId"
-                            >{{ api.apiName }}
+                        <menu-item :name="api.apiId" v-for="api in item.apiList" :key="api.apiId">{{ api.apiName }}
                         </menu-item>
                     </submenu>
                 </i-menu>
@@ -36,13 +23,10 @@
             <i-col span="20">
                 <tabs type="card">
                     <tab-pane label="预览">
-                        <preview :isLoading="previewIsLoading" :data="detaile"/>
+                        <preview :isLoading="previewIsLoading" :data="detaile" />
                     </tab-pane>
                     <tab-pane label="编辑">
-                        <update-api :data="detaile"/>
-                    </tab-pane>
-                    <tab-pane label="新增">
-                        <add-api />
+                        <update-api :data="detaile" />
                     </tab-pane>
                 </tabs>
             </i-col>
@@ -64,7 +48,6 @@ import {
     handleApi
 } from "../../api/index.js"
 import Preview from "./Preview.vue"
-import AddApi from "./AddAPI.vue"
 import UpdateApi from "./UpdateApi.vue"
 import {
     UPDATE_TOPRO,
@@ -84,7 +67,7 @@ export default {
             //预览加载
             previewIsLoading: false,
             //预览内容
-            detaile:null
+            detaile: null
         }
     },
     created() {
@@ -99,7 +82,6 @@ export default {
     },
     components: {
         Preview,
-        AddApi,
         UpdateApi
     },
     methods: {
@@ -109,6 +91,7 @@ export default {
             try {
                 let res = await handleApi(this.$route.params.id, this.moduleId, name, {}, 'get')
                 this.detaile = res.data.data
+                this.detaile.moduleId = this.moduleId
             } finally {
                 this.previewIsLoading = false
             }

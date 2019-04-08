@@ -3,7 +3,7 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-04 14:49:21
- * @LastEditTime: 2019-04-07 23:04:29
+ * @LastEditTime: 2019-04-08 23:56:26
  */
 import {
     UPDATE_PROJECTLIST,
@@ -14,7 +14,9 @@ import {
     ADD_MODULE,
     EMPTY_MODULE,
     UPDATE_ONEMODULE,
-    ADD_API
+    ADD_API,
+    DELETE_API,
+    UPDATE_API
 } from './mutation-types'
 export default {
 
@@ -85,12 +87,47 @@ export default {
      * @param {type} 
      * @return: 
      */
-    [ADD_API](state,payload){
+    [ADD_API](state, payload) {
         state.module.forEach(item => {
-            if(item.moduleId == payload.moduleId){
+            if (item.moduleId == payload.moduleId) {
                 item.apiList.push(payload.api)
             }
         });
-    }
+    },
 
+    /**
+     * @description: 删除api
+     * @param {type} 
+     * @return: 
+     */
+    [DELETE_API](state, payload) {
+        state.module.forEach(item => {
+            if (item.moduleId == payload.moduleId) {
+                item.apiList.forEach((el, i) => {
+                    if (el.apiId == payload.apiId) {
+                        item.apiList.splice(i, 1)
+                    }
+                });
+            }
+        });
+    },
+
+    /**
+     * @description: 修改api
+     * @param {type} 
+     * @return: 
+     */
+    [UPDATE_API](state, payload) {
+        state.module = state.module.map(item => {
+            if (item.moduleId == payload.moduleId) {
+                item.apiList.map(el => {
+                    if (el.apiId == payload.apiId) {
+                        el = payload.api
+                    }
+                    return el
+                });
+            }
+            return item
+        });
+    }
 }

@@ -3,7 +3,7 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-04 14:43:56
- * @LastEditTime: 2019-04-07 23:00:57
+ * @LastEditTime: 2019-04-08 23:05:23
  */
 /**
  * @description: 修改（获取）项目列表
@@ -68,3 +68,17 @@ export const EMPTY_MODULE = 'EMPTY_MODULE'
  * @return: 
  */
 export const ADD_API = 'ADD_API'
+
+/**
+ * @description: 删除接口
+ * @param {type} 
+ * @return: 
+ */
+export const DELETE_API = 'DELETE_API'
+
+/**
+ * @description: 修改接口
+ * @param {type} 
+ * @return: 
+ */
+export const UPDATE_API = 'UPDATE_API'
