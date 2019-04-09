@@ -3,14 +3,13 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-22 23:35:40
- * @LastEditTime: 2019-04-08 23:59:15
+ * @LastEditTime: 2019-04-09 22:27:32
  -->
 <template>
     <section class="project-content">
         <div class="nav">
             <breadcrumb>
                 <breadcrumb-item to="/home/project/me">我的项目</breadcrumb-item>
-                <breadcrumb-item>演示项目</breadcrumb-item>
             </breadcrumb>
             <transition name="fade" mode="out-in">
                 <i-button @click="isShowAdd=!isShowAdd" v-if="!toPro">创建新项目</i-button>

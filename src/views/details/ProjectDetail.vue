@@ -3,32 +3,36 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-27 11:54:00
- * @LastEditTime: 2019-04-08 23:50:32
+ * @LastEditTime: 2019-04-09 23:08:09
  -->
 <template>
     <div class="project-content1">
         <row :gutter="10" v-if="moduleList.length > 0">
             <!--  -->
             <i-col span="4">
-                <i-menu :theme="theme2" @on-select="handleSelectMenu"  @on-open-change="handleSelectModule">
+                <i-menu :theme="theme2" @on-select="handleSelectMenu" accordion @on-open-change="handleSelectModule">
                     <submenu :name="item.moduleId" v-for="item in moduleList" :key="item.moduleId">
                         <template slot="title">
                             {{ item.moduleName }}
                         </template>
-                        <menu-item :name="api.apiId" v-for="api in item.apiList" :key="api.apiId">{{ api.apiName }}
-                        </menu-item>
+                        <menu-item :name="api.apiId" v-for="api in item.apiList" :key="api.apiId">{{ api.apiName }}</menu-item>
                     </submenu>
                 </i-menu>
             </i-col>
             <i-col span="20">
-                <tabs type="card">
-                    <tab-pane label="预览">
-                        <preview :isLoading="previewIsLoading" :data="detaile" />
-                    </tab-pane>
-                    <tab-pane label="编辑">
-                        <update-api :data="detaile" />
-                    </tab-pane>
-                </tabs>
+                <transition name="fade" mode="out-in">
+                    <tabs type="card" v-if="apiDetail">
+                        <tab-pane label="预览">
+                            <preview :isLoading="previewIsLoading" />
+                        </tab-pane>
+                        <tab-pane label="编辑">
+                            <update-api />
+                        </tab-pane>
+                    </tabs>
+                    <div v-else class="null-data">
+                        <img :src="require('../../assets/no.svg')" alt="">
+                    </div>
+                </transition>
             </i-col>
         </row>
         <row v-else>
@@ -52,7 +56,8 @@ import UpdateApi from "./UpdateApi.vue"
 import {
     UPDATE_TOPRO,
     UPDATE_MODULES,
-    EMPTY_MODULE
+    EMPTY_MODULE,
+    GET_API
 } from "../../store/mutation-types.js"
 export default {
     data() {
@@ -66,8 +71,6 @@ export default {
             apiId: '',
             //预览加载
             previewIsLoading: false,
-            //预览内容
-            detaile: null
         }
     },
     created() {
@@ -78,6 +81,10 @@ export default {
         //模块集合
         moduleList() {
             return this.$store.state.module
+        },
+        //接口详情数据
+        apiDetail() {
+            return this.$store.state.api
         }
     },
     components: {
@@ -90,15 +97,16 @@ export default {
             this.previewIsLoading = true
             try {
                 let res = await handleApi(this.$route.params.id, this.moduleId, name, {}, 'get')
-                this.detaile = res.data.data
-                this.detaile.moduleId = this.moduleId
+                let detaile = res.data.data
+                detaile.moduleId = this.moduleId
+                this.$store.commit(GET_API, JSON.parse(JSON.stringify(detaile)))
             } finally {
                 this.previewIsLoading = false
             }
         },
         //点击获取模块id
         handleSelectModule(data) {
-            this.moduleId = data
+            this.moduleId = data[0]
         },
         //初始化加载
         async getInt() {
@@ -121,6 +129,7 @@ export default {
     beforeDestroy() {
         //组件销毁之前清空模块集合
         this.$store.commit(EMPTY_MODULE)
+        
     }
 }
 </script>
@@ -133,7 +142,14 @@ export default {
 /deep/ .ivu-menu {
     z-index: 7;
 }
-
+.null-data {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+}
 .project-content1 {
     position: relative;
 

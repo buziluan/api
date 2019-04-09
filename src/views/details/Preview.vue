@@ -3,7 +3,7 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-27 21:15:48
- * @LastEditTime: 2019-04-08 22:16:05
+ * @LastEditTime: 2019-04-09 21:14:51
  -->
 
 <template>
@@ -42,127 +42,140 @@
                 <pre v-html="responseData"></pre>
             </form-item>
         </i-form>
-    <spin v-show="isLoading" fix/>
+        <div v-else class="null-data">
+            <img :src="require('../../assets/no.svg')" alt="">
+        </div>
+        <spin v-show="isLoading" fix />
     </div>
 </template>
 <script>
-    import {
-       paramToObject, syntaxHighlight
-    } from "@/utils/utils.js"
-    export default {
-        props: {
-            isLoading:[Boolean],
-            data:[Object]
-        },
-        data() {
-            return {
-                obj: {
-                    username: "admin",
-                    password: "admin",
-                },
-                columns1: [{
-                        title: '参数名',
-                        key: 'name',
-                        align: "left"
-                    },
-                    {
-                        title: '类型',
-                        key: 'cate'
-                    },
-                    {
-                        title: '默认值',
-                        key: 'default'
-                    },
-                    {
-                        title: '必填',
-                        key: 'require'
-                    },
-                    {
-                        title: '描述',
-                        key: 'describe'
-                    }
-                ],
-                data1: [{
-                    property: "username",
-                    className: "String",
-                    default: "",
-                    required: "是",
-                    describe: "登录用户名"
-                }, {
-                    property: "password",
-                    className: "String",
-                    default: "",
-                    required: "是",
-                    describe: "登录密码"
-                }]
-            }
-        },
-        computed: {
-            //请求参数
-            requestData() {
-                return syntaxHighlight(paramToObject(JSON.parse(this.data.requestParam)))
+import {
+    paramToObject, syntaxHighlight
+} from "@/utils/utils.js"
+export default {
+    props: {
+        isLoading: [Boolean]
+    },
+    data() {
+        return {
+            obj: {
+                username: "admin",
+                password: "admin",
             },
-             //响应参数
-            responseData() {
-                return syntaxHighlight(paramToObject(JSON.parse(this.data.responseParam)))
+            columns1: [{
+                title: '参数名',
+                key: 'name',
+                align: "left"
+            },
+            {
+                title: '类型',
+                key: 'cate'
+            },
+            {
+                title: '默认值',
+                key: 'default'
+            },
+            {
+                title: '必填',
+                key: 'require'
+            },
+            {
+                title: '描述',
+                key: 'describe'
             }
+            ],
+            data1: [{
+                property: "username",
+                className: "String",
+                default: "",
+                required: "是",
+                describe: "登录用户名"
+            }, {
+                property: "password",
+                className: "String",
+                default: "",
+                required: "是",
+                describe: "登录密码"
+            }]
+        }
+    },
+    computed: {
+        //请求参数
+        requestData() {
+            return syntaxHighlight(paramToObject(JSON.parse(this.data.requestParam)))
+        },
+        //响应参数
+        responseData() {
+            return syntaxHighlight(paramToObject(JSON.parse(this.data.responseParam)))
+        },
+        //接口详情
+        data() {
+            return this.$store.state.api
         }
     }
+}
 </script>
 <style lang="less" scoped>
-    .content {
+.content {
+    width: 100%;
+    padding: 0 20px 20px 20px;
+    height: auto;
+    overflow: hidden;
+    min-width: 500px;
+    .content-item {
+        padding: 10px;
+        margin: 5px;
         width: 100%;
-        padding: 0 20px 20px 20px;
-        height: auto;
-        overflow: hidden;
-        min-width: 500px;
-        .content-item {
-            padding: 10px;
-            margin: 5px;
-            width: 100%;
-            text-align: left;
-            background-color: #909399;
-            border-radius: 10px;
-            color: white;
+        text-align: left;
+        background-color: #909399;
+        border-radius: 10px;
+        color: white;
+    }
+
+    /deep/ .ivu-form-item-label {
+        font-size: 20px;
+        font-weight: 500;
+    }
+
+    /deep/ .ivu-form-item-content {
+        padding: 20px 0px 10px 20px;
+        font-size: 16px;
+    }
+    .null-data {
+        width: 100%;
+        height: 200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 30px;
+    }
+    pre {
+        padding: 10px;
+        margin: 5px;
+        width: 100%;
+        text-align: left;
+        background-color: rgb(232, 236, 241);
+        border-radius: 10px;
+
+        pre .string {
+            color: red !important;
         }
 
-        /deep/ .ivu-form-item-label {
-            font-size: 20px;
-            font-weight: 500;
+        /deep/ .number {
+            color: #3e76f7 !important;
         }
 
-        /deep/ .ivu-form-item-content {
-            padding: 20px 0px 10px 20px;
-            font-size: 16px;
+        /deep/ .boolean {
+            color: #3e76f7 !important;
         }
 
-        pre {
-            padding: 10px;
-            margin: 5px;
-            width: 100%;
-            text-align: left;
-            background-color: rgb(232, 236, 241);
-            border-radius: 10px;
+        /deep/ .null {
+            color: magenta !important;
+        }
 
-            pre .string {
-                color: red !important;
-            }
-
-            /deep/ .number {
-                color: #3e76f7 !important;
-            }
-
-            /deep/ .boolean {
-                color: #3e76f7 !important;
-            }
-
-            /deep/ .null {
-                color: magenta !important;
-            }
-
-            /deep/ .key {
-                color: red;
-            }
+        /deep/ .key {
+            color: red;
         }
     }
+}
 </style>

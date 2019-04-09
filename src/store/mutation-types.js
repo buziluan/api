@@ -3,7 +3,7 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-04 14:43:56
- * @LastEditTime: 2019-04-08 23:05:23
+ * @LastEditTime: 2019-04-09 20:55:39
  */
 /**
  * @description: 修改（获取）项目列表
@@ -82,3 +82,10 @@ export const DELETE_API = 'DELETE_API'
  * @return: 
  */
 export const UPDATE_API = 'UPDATE_API'
+
+/**
+ * @description: 获取接口详情
+ * @param {type} 
+ * @return: 
+ */
+export const GET_API ='GET_API'

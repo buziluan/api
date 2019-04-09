@@ -3,7 +3,7 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-25 19:11:06
- * @LastEditTime: 2019-03-31 22:18:34
+ * @LastEditTime: 2019-04-09 22:27:07
  -->
 <template>
     <div class="wrap">
@@ -74,7 +74,7 @@
                     })
                     sessionStorage.setItem("token",res.data.data)
                     this.isLoading = false
-                    if (res.status === 200) {
+                    if (res.data.code === 0) {
                         this.$Message.success({
                             content: "登录成功"
                         })

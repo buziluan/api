@@ -1,28 +1,41 @@
+# 前言
+在平时工作开发中，前后分离同时开发会因接口未定好规范而需要联调过久的时间，从而导致开发效率低下，做这个小项目的目的就是为了在开发前进行接口文档的简单规范，接口文档主要由前端人员去规定。前端人员根据页面内容来设计所需要的参数，已经数据格式，将格式规定好后前后端可同时进行开发，互不影响，前端可以通过各种mock工具模拟数据。后台也可专心进行业务处理。此项目代码也比较简单。适合初学vue的朋友来看。目前做的还不是很完善，如果有意见欢迎指出。项目设计参考[easy-mock](https://www.easy-mock.com/)和[易文挡](https://easydoc.xyz/#/console)的部分内容。
 
+# 技术栈
+vue2 + vuex + vue-router + ES6 + iview + axios
 
-``` bash
-# install dependencies
-npm install
+# 项目运行
+```javascript
 
-# serve with hot reload at localhost:8080
-npm run serve
+npm i 
 
-# build for production with minification
-npm run build
+npm run serve 
 
-# build for production and view the bundle analyzer report
-npm run build --report
-
-npm test
+npm run build 
 ```
 
-# API生成工具
-前后交互时根据需求去书写json数据，去规定对应的参数。请求头。请求方式。以及相应格式。方便前后端根据设定好的api去进行开发
+# 后台服务
+服务端使用java开发  
+[服务端地址](https://github.com/fuyitaoqqq/epd)
 
+# 演示地址
 [演示地址](http://59.110.138.185/work/api/index.html#/login)  
- 
- 
-演示账号：admin  
-演示密码：admin
+演示账号 admin   
+演示账号密码 admin
 
-[后台地址](https://github.com/fuyitaoqqq/epd)  
+# 已有模块
+登录模块  
+项目模块  
+接口模块 
+
+# 后续（期望）
+1. 优化现有功能，增加用户体验
+2. 增加团队模式
+3. 增加个人模式
+4. 接口内容细化
+5. 增加全局通用配置
+6. 增加用户管理系统
+7. 增加mock功能
+
+# 总结
+这个小项目虽然页面不多。但是也用了把简单的vue全家桶使用了一下。之前工作中对于vuex的使用不够明白。这次的开发中更加的对vuex增加的了解，对vue-router也加深了认识。作为一个初学者很希望可以得到大佬的指点。如果您觉得项目还不错，可以点个star，如有什么意见可以在issues中留言。会及时回复的。

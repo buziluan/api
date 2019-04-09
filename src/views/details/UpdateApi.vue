@@ -3,34 +3,34 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-04-02 18:14:03
- * @LastEditTime: 2019-04-08 23:57:01
+ * @LastEditTime: 2019-04-09 23:11:12
  -->
 <template>
     <div class="add-content">
 
-        <i-form label-position="top" v-if="data">
+        <i-form label-position="top" ref="update" v-if="data" :model="data">
             <row :gutter="20">
                 <i-col span="24">
                     <i-button type="error" @click="confirmDel" :loading="isDelBtnLoading" style="margin-bottom:20px;margin-right:20px;">删除接口</i-button>
                     <i-button @click="handliClickUpdateApi" :loading="isUpdateLoading" style="margin-bottom:20px;">确认修改</i-button>
                 </i-col>
                 <i-col span="12">
-                    <form-item label="接口名称" class="formitem">
+                    <form-item label="接口名称" class="formitem" prop="apiName" :rules="{required: true, message: '接口名不能为空', trigger: 'blur'}">
                         <i-input v-model="data.apiName" />
                     </form-item>
                 </i-col>
                 <i-col span="12">
-                    <form-item label="接口描述" class="formitem">
+                    <form-item label="接口描述" class="formitem" prop="description" :rules="{required: true, message: '接口描述不能为空', trigger: 'blur'}">
                         <i-input v-model="data.description" />
                     </form-item>
                 </i-col>
                 <i-col span="12">
-                    <form-item label="接口路径" class="formitem">
+                    <form-item label="接口路径" class="formitem" prop="uri" :rules="{required: true, message: '接口路径不能为空', trigger: 'blur'}">
                         <i-input v-model="data.uri"></i-input>
                     </form-item>
                 </i-col>
                 <i-col span="12">
-                    <form-item label="请求方法" class="formitem">
+                    <form-item label="请求方法" class="formitem" prop="method" :rules="{required: true, message: '请求方法不能为空', trigger: 'change'}">
                         <i-select v-model="data.method">
                             <i-option value="GET">GET</i-option>
                             <i-option value="POST">POST</i-option>
@@ -40,14 +40,7 @@
                     </form-item>
                 </i-col>
                 <i-col span="12">
-                    <form-item label="所属模块" class="formitem">
-                        <i-select v-model="data.moduleId">
-                            <i-option :value="item.moduleId" v-for="(item, index) in moduleList" :key="index">{{ item.moduleName }}</i-option>
-                        </i-select>
-                    </form-item>
-                </i-col>
-                <i-col span="12">
-                    <form-item label="Content-Type" class="formitem">
+                    <form-item label="Content-Type" class="formitem" prop="contentType" :rules="{required: true, message: 'Content-Type不能为空', trigger: 'change'}">
                         <i-select v-model="data.contentType">
                             <i-option value="application/x-www-form-urlencoded">application/x-www-form-urlencoded</i-option>
                             <i-option value="multipart/form-data">multipart/form-data</i-option>
@@ -81,6 +74,9 @@
                 </i-col>
             </row>
         </i-form>
+        <div v-else class="null-data">
+            <img :src="require('../../assets/no.svg')" alt="">
+        </div>
     </div>
 </template>
 <script>
@@ -89,13 +85,6 @@ import { deleteDataItem, paramToObject, syntaxHighlight } from "../../utils/util
 import { handleApi } from "@/api/index.js"
 import { DELETE_API, UPDATE_API } from "@/store/mutation-types.js"
 export default {
-    props: {
-        data: [Object]
-    },
-    model: {
-        prop: 'data',
-        event: 'update'
-    },
     data() {
         return {
             //展开的内容
@@ -104,7 +93,8 @@ export default {
             //删除按钮加载状态
             isDelBtnLoading: false,
             //修改按钮加载状态
-            isUpdateLoading: false
+            isUpdateLoading: false,
+            data: null
         }
     },
     computed: {
@@ -119,6 +109,10 @@ export default {
         //模块集合
         moduleList() {
             return this.$store.state.module
+        },
+        //接口详情
+        api() {
+            return this.$store.state.api
         }
     },
     components: {
@@ -145,27 +139,32 @@ export default {
         },
         //修改api
         async  handliClickUpdateApi() {
-            this.$Message.error("未开发完成")
-            return
-            // let params = this.data;
-            // let projectId = this.$route.params.id
-            // let moduleId = this.data.moduleId
-            // let apiId = this.data.apiId
-            // delete params.moduleId
-            // delete params.apiId
-            // try {
-            //     this.isUpdateLoading = true
-            //     let res = await handleApi(projectId, moduleId, apiId, params, 'PUT')
-            //     if (res.data.code == 0) {
-            //         this.$Message.success("修改成功")
-            //         this.$store.commit(UPDATE_API, {
-            //             moduleId, apiId,
-            //             api: res.data.data
-            //         })
-            //     }
-            // } finally {
-            //     this.isUpdateLoading = false
-            // }
+            let valid = await this.$refs.update.validate()
+            if (valid) {
+                let params = this.data;
+                let projectId = this.$route.params.id
+                let moduleId = this.data.moduleId
+                let apiId = this.data.apiId
+                delete params.moduleId
+                delete params.apiId
+                try {
+                    this.isUpdateLoading = true
+                    let res = await handleApi(projectId, moduleId, apiId, params, 'PUT')
+                    let api = res.data.data
+                    api.apiId = apiId
+                    api.moduleId = moduleId
+                    if (res.data.code == 0) {
+                        this.$Message.success("修改成功")
+                        this.$store.commit(UPDATE_API, {
+                            moduleId, apiId,
+                            api: api
+                        })
+                    }
+                } finally {
+                    this.isUpdateLoading = false
+                }
+            }
+
         },
         //删除参数(响应)
         handleClickDelete1(id) {
@@ -210,7 +209,7 @@ export default {
                         apiId, moduleId
                     })
                     this.$Message.success("删除成功")
-                    this.$emit("update", null)
+
                 }
 
             } catch (error) {
@@ -220,8 +219,13 @@ export default {
             }
         }
     },
+    mounted() {
+        this.data = this.api
+    },
     watch: {
-
+        api(val) {
+            this.data = val
+        }
     }
 }
 </script>
@@ -243,6 +247,14 @@ export default {
     }
     /deep/ .ivu-collapse-content-box {
         padding: 0;
+    }
+    .null-data {
+        width: 100%;
+        height: 200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 30px;
     }
 }
 </style>

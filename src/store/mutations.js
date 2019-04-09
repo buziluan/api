@@ -3,7 +3,7 @@
  * @Author: 房旭
  * @LastEditors: 房旭
  * @Date: 2019-03-04 14:49:21
- * @LastEditTime: 2019-04-08 23:56:26
+ * @LastEditTime: 2019-04-09 23:17:08
  */
 import {
     UPDATE_PROJECTLIST,
@@ -16,7 +16,8 @@ import {
     UPDATE_ONEMODULE,
     ADD_API,
     DELETE_API,
-    UPDATE_API
+    UPDATE_API,
+    GET_API
 } from './mutation-types'
 export default {
 
@@ -56,10 +57,11 @@ export default {
     },
 
     /**
-     * @description:清空modules
+     * @description:清空modules和接口详情
      */
     [EMPTY_MODULE](state) {
         state.module = []
+        state.api = null
     },
 
     /**
@@ -110,6 +112,7 @@ export default {
                 });
             }
         });
+        state.api = null
     },
 
     /**
@@ -118,16 +121,31 @@ export default {
      * @return: 
      */
     [UPDATE_API](state, payload) {
+        state.api = payload.api
         state.module = state.module.map(item => {
             if (item.moduleId == payload.moduleId) {
-                item.apiList.map(el => {
+                item.apiList.map((el, i) => {
                     if (el.apiId == payload.apiId) {
-                        el = payload.api
+                        let api = {
+                            apiId:payload.apiId,
+                            apiName:payload.api.apiName,
+                            uri:payload.api.uri
+                        }
+                        item.apiList.splice(i, 1, api)
                     }
                     return el
                 });
             }
             return item
         });
+    },
+
+    /**
+     * @description: 获取接口详情
+     * @param {type} 
+     * @return: 
+     */
+    [GET_API](state, api) {
+        state.api = api;
     }
 }
